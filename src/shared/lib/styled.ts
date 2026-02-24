@@ -37,7 +37,7 @@ export const StyledButton = styled.button`
 
   &:disabled {
     background-color: ${colors.border};
-  color: ${colors.textSecondary};
+    color: ${colors.textSecondary};
     cursor: not-allowed;
     opacity: 0.6;
   }
