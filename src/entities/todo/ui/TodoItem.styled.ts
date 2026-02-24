@@ -33,3 +33,58 @@ export const StyledTodoText = styled.span<StyledProps>`
   color: ${props => props.$completed ? colors.textSecondary : colors.textPrimary};
   text-decoration: ${props => props.$completed ? 'line-through' : 'none'};
 `
+
+export const StyledEditActionButton = styled.button`
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  background-color: ${colors.primary};
+  color: ${colors.white};
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: ${colors.primaryHover};
+  }
+`
+
+export const StyledEditInput = styled.input`
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 2px solid ${colors.primary};
+  border-radius: 4px;
+  outline: none;
+  background-color: ${colors.white};
+`
+
+export const StyledEditButton = styled.button`
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  background-color: ${colors.primary};
+  color: ${colors.white};
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: ${colors.primaryHover};
+  }
+`
+
+export const StyledCancelButton = styled.button`
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  background-color: ${colors.border};
+  color: ${colors.textPrimary};
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: ${colors.borderLight};
+  }
+`
