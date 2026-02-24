@@ -31,8 +31,15 @@ export const StyledButton = styled.button`
   cursor: pointer;
   transition: background-color 0.2s;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background-color: ${colors.primaryHover};
+  }
+
+  &:disabled {
+    background-color: ${colors.border};
+  color: ${colors.textSecondary};
+    cursor: not-allowed;
+    opacity: 0.6;
   }
 `
 

@@ -1,4 +1,3 @@
-import { useState, useRef, useEffect } from 'react'
 import { Todo } from '../model/types'
 import { useAppDispatch } from '@shared/lib/redux'
 import { toggleTodo, deleteTodo, updateTodo } from '../model/todoSlice'
@@ -12,16 +11,25 @@ import {
     StyledCancelButton,
     StyledEditActionButton
 } from './TodoItem.styled'
+import { useTodoEdit } from './lib/useTodoEdit'
+import { handleKeyboardEdit } from './lib/handleKeyboardEdit'
+import { validateTodoText } from './lib/validateTodoText'
 
 interface TodoItemProps {
     todo: Todo
 }
 
 export function TodoItem({ todo }: TodoItemProps) {
-    const [isEditing, setIsEditing] = useState(false)
-    const [editText, setEditText] = useState(todo.text)
-    const inputRef = useRef<HTMLInputElement>(null)
     const dispatch = useAppDispatch()
+    const {
+        isEditing,
+        editText,
+        setEditText,
+        inputRef,
+        startEdit,
+        cancelEdit,
+        finishEdit,
+    } = useTodoEdit(todo)
 
     const handleToggle = () => {
         dispatch(toggleTodo(todo.id))
@@ -31,42 +39,20 @@ export function TodoItem({ todo }: TodoItemProps) {
         dispatch(deleteTodo(todo.id))
     }
 
-    const handleEdit = () => {
-        setIsEditing(true)
-        setEditText(todo.text)
-    }
-
     const handleSave = () => {
-        if (editText.trim()) {
-            dispatch(updateTodo({ id: todo.id, text: editText.trim() }))
-            setIsEditing(false)
+        const trimmedText = editText.trim()
+        if (validateTodoText(trimmedText)) {
+            dispatch(updateTodo({ id: todo.id, text: trimmedText }))
+            finishEdit()
         }
-    }
-
-    const handleCancel = () => {
-        setEditText(todo.text)
-        setIsEditing(false)
     }
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            handleSave()
-        } else if (e.key === 'Escape') {
-            handleCancel()
-        }
+        handleKeyboardEdit(e, {
+            onSave: handleSave,
+            onCancel: cancelEdit,
+        })
     }
-
-    useEffect(() => {
-        if (isEditing && inputRef.current) {
-            inputRef.current.focus()
-        }
-    }, [isEditing])
-
-    useEffect(() => {
-        if (!isEditing) {
-            setEditText(todo.text)
-        }
-    }, [todo.text, isEditing])
 
     return (
         <StyledTodoItem $completed={todo.completed}>
@@ -88,7 +74,7 @@ export function TodoItem({ todo }: TodoItemProps) {
                     <StyledEditButton onClick={handleSave}>
                         Сохранить
                     </StyledEditButton>
-                    <StyledCancelButton onClick={handleCancel}>
+                    <StyledCancelButton onClick={cancelEdit}>
                         Отмена
                     </StyledCancelButton>
                 </>
@@ -97,7 +83,7 @@ export function TodoItem({ todo }: TodoItemProps) {
                     <StyledTodoText $completed={todo.completed}>
                         {todo.text}
                     </StyledTodoText>
-                    <StyledEditActionButton onClick={handleEdit}>
+                    <StyledEditActionButton onClick={startEdit}>
                         Редактировать
                     </StyledEditActionButton>
                     <StyledDeleteButton onClick={handleDelete}>
