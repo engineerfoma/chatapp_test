@@ -1,15 +1,16 @@
 import { Provider } from 'react-redux'
 import { store } from '@app/store'
 import { TodoList } from '@widgets/todo-list'
+import { StyledApp, StyledTitle } from './App.styled'
 import './index.css'
 
 export function App() {
     return (
         <Provider store={store}>
-            <div className="app">
-                <h1>Todo List App</h1>
+            <StyledApp>
+                <StyledTitle>Todo List</StyledTitle>
                 <TodoList />
-            </div>
+            </StyledApp>
         </Provider>
     )
 }

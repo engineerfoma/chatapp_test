@@ -1,20 +1,21 @@
 import { useAppSelector } from '@shared/lib/redux'
 import { TodoItem } from '@entities/todo'
 import { AddTodoForm } from '@features/add-todo'
+import { StyledTodoList, StyledTodosContainer, StyledEmptyMessage } from './TodoList.styled'
 
 export function TodoList() {
     const todos = useAppSelector((state) => state.todo.todos)
 
     return (
-        <div className="todo-list">
+        <StyledTodoList>
             <AddTodoForm />
-            <div className="todos-container">
+            <StyledTodosContainer>
                 {todos.length === 0 ? (
-                    <p className="empty-message">Список задач пуст</p>
+                    <StyledEmptyMessage>Список задач пуст</StyledEmptyMessage>
                 ) : (
                     todos.map((todo) => <TodoItem key={todo.id} todo={todo} />)
                 )}
-            </div>
-        </div>
+            </StyledTodosContainer>
+        </StyledTodoList>
     )
 }

@@ -1,6 +1,8 @@
 import { Todo } from '../model/types'
 import { useAppDispatch } from '@shared/lib/redux'
 import { toggleTodo, deleteTodo } from '../model/todoSlice'
+import { StyledDeleteButton } from '@shared/lib/styled'
+import { StyledTodoItem, StyledCheckbox, StyledTodoText } from './TodoItem.styled'
 
 interface TodoItemProps {
     todo: Todo
@@ -18,17 +20,18 @@ export function TodoItem({ todo }: TodoItemProps) {
     }
 
     return (
-        <div className={`todo-item ${todo.completed ? 'completed' : ''}`}>
-            <input
+        <StyledTodoItem $completed={todo.completed}>
+            <StyledCheckbox
                 type="checkbox"
                 checked={todo.completed}
                 onChange={handleToggle}
-                className="todo-checkbox"
             />
-            <span className="todo-text">{todo.text}</span>
-            <button onClick={handleDelete} className="todo-delete-button">
+            <StyledTodoText $completed={todo.completed}>
+                {todo.text}
+            </StyledTodoText>
+            <StyledDeleteButton onClick={handleDelete}>
                 Удалить
-            </button>
-        </div>
+            </StyledDeleteButton>
+        </StyledTodoItem>
     )
 }

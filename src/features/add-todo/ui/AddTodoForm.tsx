@@ -1,6 +1,7 @@
 import { useState, FormEvent } from 'react'
 import { useAppDispatch } from '@shared/lib/redux'
 import { addTodo } from '@entities/todo'
+import { StyledForm, StyledInput, StyledButton } from '@shared/lib/styled'
 
 export function AddTodoForm() {
     const [text, setText] = useState('')
@@ -15,17 +16,16 @@ export function AddTodoForm() {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="add-todo-form">
-            <input
+        <StyledForm onSubmit={handleSubmit}>
+            <StyledInput
                 type="text"
                 value={text}
-                onChange={(e) => setText(e.target.value)}
-                placeholder="Добавить новую задачу..."
-                className="add-todo-input"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setText(e.target.value)}
+                placeholder="Добавить новую задачу"
             />
-            <button type="submit" className="add-todo-button">
+            <StyledButton type="submit">
                 Добавить
-            </button>
-        </form>
+            </StyledButton>
+        </StyledForm>
     )
 }
