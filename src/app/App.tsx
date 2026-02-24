@@ -1,5 +1,6 @@
 import { Provider } from 'react-redux'
 import { store } from '@app/store'
+import { TodoList } from '@widgets/todo-list'
 import './index.css'
 
 export function App() {
@@ -7,6 +8,7 @@ export function App() {
         <Provider store={store}>
             <div className="app">
                 <h1>Todo List App</h1>
+                <TodoList />
             </div>
         </Provider>
     )
