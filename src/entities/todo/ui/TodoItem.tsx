@@ -9,11 +9,14 @@ import {
     StyledEditInput,
     StyledEditButton,
     StyledCancelButton,
-    StyledEditActionButton
+    StyledEditActionButton,
+    StyledDragHandle
 } from './TodoItem.styled'
 import { useTodoEdit } from './lib/useTodoEdit'
 import { handleKeyboardEdit } from './lib/handleKeyboardEdit'
 import { validateTodoText } from './lib/validateTodoText'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 
 interface TodoItemProps {
     todo: Todo
@@ -30,6 +33,20 @@ export function TodoItem({ todo }: TodoItemProps) {
         cancelEdit,
         finishEdit,
     } = useTodoEdit(todo)
+
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+        isDragging,
+    } = useSortable({ id: todo.id, disabled: isEditing })
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+    }
 
     const handleToggle = () => {
         dispatch(toggleTodo(todo.id))
@@ -55,7 +72,16 @@ export function TodoItem({ todo }: TodoItemProps) {
     }
 
     return (
-        <StyledTodoItem $completed={todo.completed}>
+        <StyledTodoItem
+            ref={setNodeRef}
+            style={style}
+            $completed={todo.completed}
+            $isDragging={isDragging}
+            {...attributes}
+        >
+            {!isEditing && (
+                <StyledDragHandle {...listeners} />
+            )}
             <StyledCheckbox
                 type="checkbox"
                 checked={todo.completed}

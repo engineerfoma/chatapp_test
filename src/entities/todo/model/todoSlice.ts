@@ -34,8 +34,18 @@ const todoSlice = createSlice({
                 todo.text = action.payload.text
             }
         },
+        reorderTodos: (state, action: PayloadAction<{ activeId: string; overId: string }>) => {
+            const { activeId, overId } = action.payload
+            const oldIndex = state.todos.findIndex((t) => t.id === activeId)
+            const newIndex = state.todos.findIndex((t) => t.id === overId)
+
+            if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
+                const [removed] = state.todos.splice(oldIndex, 1)
+                state.todos.splice(newIndex, 0, removed)
+            }
+        },
     },
 })
 
-export const { addTodo, toggleTodo, deleteTodo, updateTodo } = todoSlice.actions
+export const { addTodo, toggleTodo, deleteTodo, updateTodo, reorderTodos } = todoSlice.actions
 export default todoSlice.reducer
